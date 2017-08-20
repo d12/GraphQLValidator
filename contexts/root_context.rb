@@ -1,0 +1,3 @@
+class RootContext < Context
+
+end

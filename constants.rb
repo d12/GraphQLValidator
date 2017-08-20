@@ -1,0 +1,10 @@
+module Constants
+  NEWLINE_ORD = 10
+  SPACE_ORD = 32
+  ZERO_ORD = 49
+  NINE_ORD = 57
+  BIG_A_ORD = 65
+  BIG_Z_ORD = 90
+  LITTLE_A_ORD = 97
+  LITTLE_Z_ORD = 122
+end
