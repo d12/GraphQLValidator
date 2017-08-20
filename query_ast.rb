@@ -1,21 +1,8 @@
-# QueryAST parses the GraphQL query into structured AST for the validator
-# to use.
+# QueryAST parses the GraphQL query into an AST for the validator to use.
 #
 # The class is strictly concerned about syntax, not semantics. It does ensure
 # that various GraphQL semantics are followed such as type correctness,
 # valid field names, and valid structure.
-#
-# Implementation:
-#
-# This code is written with performance in mind.
-#
-# To begin, we turn the query string into a char array. We only ever do
-# 1 of 2 things to the array: Look at the first element, and shift(pop) the first
-# element. This ensures we only actually read the query string once. By using a
-# recursive strategy, we can generate an AST by reading the query once from beginning
-# to end, one character at a time.
-#
-# Each method mutates the tokenizer and trims off the elements that it has processed.
 #
 # Example:
 #
