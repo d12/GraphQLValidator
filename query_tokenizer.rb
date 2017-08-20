@@ -66,14 +66,17 @@ class QueryTokenizer
       :int
     when /\A[[:digit:]]+\.[[:digit:]]+\z/
       :float
-    when 'true', 'false'
-      :bool
+    when 'true'
+      :true
+    when 'false'
+      :false
     when /\A".*"\z/
       :string
     when /\A.+:\z/
       :key
     when ''
-      return nil
+      next_token_string = "END OF STREAM"
+      :empty
     else
       :field
     end

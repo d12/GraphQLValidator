@@ -1,4 +1,5 @@
 require_relative '../query_ast.rb'
+require_relative '../query_tokenizer.rb'
 
 describe "QueryAST" do
   subject { QueryAST }
@@ -6,9 +7,10 @@ describe "QueryAST" do
   describe "#build" do
     context "simple, no args, no bodies" do
       let(:query) { "query" }
+      let(:tokenizer) { QueryTokenizer.new(query) }
 
       it "generates correct AST" do
-        expect(subject.build(query)).to eq({
+        expect(subject.build(tokenizer)).to eq({
           field: "query",
           arguments: {},
           body: []
@@ -18,9 +20,10 @@ describe "QueryAST" do
 
     context "has a field with a body" do
       let(:query) { "query { viewer }" }
+      let(:tokenizer) { QueryTokenizer.new(query) }
 
       it "generates correct AST" do
-        expect(subject.build(query)).to eq({
+        expect(subject.build(tokenizer)).to eq({
           field: "query",
           arguments: {},
           body: [{
@@ -34,9 +37,10 @@ describe "QueryAST" do
 
     context "has multiple fields" do
       let(:query) { "query { viewer foo }" }
+      let(:tokenizer) { QueryTokenizer.new(query) }
 
       it "generates correct AST" do
-        expect(subject.build(query)).to eq({
+        expect(subject.build(tokenizer)).to eq({
           field: "query",
           arguments: {},
           body: [{
@@ -56,9 +60,10 @@ describe "QueryAST" do
     context "has arguments" do
       context "string arguments" do
         let(:query) { "query { user(name: \"John\") }" }
+        let(:tokenizer) { QueryTokenizer.new(query) }
 
         it "generates correct AST" do
-          expect(subject.build(query)).to eq({
+          expect(subject.build(tokenizer)).to eq({
             field: "query",
             arguments: {},
             body: [{
@@ -72,9 +77,10 @@ describe "QueryAST" do
 
       context "integer arguments" do
         let(:query) { "query { user(name: 2) }" }
+        let(:tokenizer) { QueryTokenizer.new(query) }
 
         it "generates correct AST" do
-          expect(subject.build(query)).to eq({
+          expect(subject.build(tokenizer)).to eq({
             field: "query",
             arguments: {},
             body: [{
@@ -88,9 +94,10 @@ describe "QueryAST" do
 
       context "float arguments" do
         let(:query) { "query { user(name: 2.5) }" }
+        let(:tokenizer) { QueryTokenizer.new(query) }
 
         it "generates correct AST" do
-          expect(subject.build(query)).to eq({
+          expect(subject.build(tokenizer)).to eq({
             field: "query",
             arguments: {},
             body: [{

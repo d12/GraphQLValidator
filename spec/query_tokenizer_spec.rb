@@ -24,8 +24,8 @@ describe "Query Tokenizer" do
       let(:tokenizer) { subject.new("true false") }
 
       it "creates correct token" do
-        expect(tokenizer.pop).to eq({ type: :bool, string: "true"})
-        expect(tokenizer.pop).to eq({ type: :bool, string: "false"})
+        expect(tokenizer.pop).to eq({ type: :true, string: "true"})
+        expect(tokenizer.pop).to eq({ type: :false, string: "false"})
       end
     end
 
@@ -56,8 +56,8 @@ describe "Query Tokenizer" do
     context "empty stream" do
       let(:tokenizer) { subject.new("") }
 
-      it "returns nil" do
-        expect(tokenizer.pop).to be_nil
+      it "returns end of stream token" do
+        expect(tokenizer.pop).to eq({ type: :empty, string: "END OF STREAM" })
       end
     end
 

@@ -7,7 +7,8 @@ class QueryValidator
   class << self
     def validate(schema, query)
       @schema = schema
-      ast = QueryAST.build(query)
+      tokenizer = QueryTokenizer.new(query)
+      ast = QueryAST.build(tokenizer)
     end
 
     def validate_layer(query, context:)

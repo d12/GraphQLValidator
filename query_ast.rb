@@ -15,7 +15,7 @@
 # recursive strategy, we can generate an AST by reading the query once from beginning
 # to end, one character at a time.
 #
-# Each method mutates query_arr and trims off the elements that it has processed.
+# Each method mutates the tokenizer and trims off the elements that it has processed.
 #
 # Example:
 #
@@ -51,146 +51,93 @@ class QueryAST
   class ParseException < Exception; end
 
   class << self
-    def build(query)
-      result = build_node(query.chars)
+    def build(tokenizer)
+      result = build_node(tokenizer)
     end
 
-    def build_node(query_arr)
+    def build_node(tokenizer)
       return {
-        field: extract_label(query_arr),
-        arguments: extract_args(query_arr),
-        body: build_body(query_arr)
+        field: get_field(tokenizer),
+        arguments: get_args(tokenizer),
+        body: build_body(tokenizer)
       }
     end
 
-    def extract_label(query_arr)
-      trim_whitespace(query_arr)
+    def get_field(tokenizer)
+      token = tokenizer.pop
+      validate_token_type(token, :field)
 
-      field = ""
-      while is_alpha?(query_arr.first)
-        field << query_arr.shift
-      end
+      throw_parse_exception(token, "field") unless (token[:type] == :field)
 
-      raise ParseException, "Empty label" if field.empty?
-
-      field
+      token[:string]
     end
 
-    def extract_args(query_arr)
-      trim_whitespace(query_arr)
-
+    def get_args(tokenizer)
       args = {}
-      return args unless query_arr.first == "("
+      return args unless (tokenizer.peek[:type] == :left_paren)
 
       # remove "("
-      query_arr.shift
+      tokenizer.pop
 
       while true
-        key = ""
-        while is_alpha?(query_arr.first)
-            key << query_arr.shift
-        end
+        token = tokenizer.pop
+        validate_token_type(token, :key)
 
-        unless query_arr.first == ":"
-          raise ParseException, "Malformed argument, missing :"
-        end
-        query_arr.shift
-        trim_whitespace(query_arr)
+        # Remove :
+        key = token[:string].sub(":", "")
 
-        #TODO: implement boolean args
-
-        value = ""
-        if(query_arr.first == "\"")
-          # String value
-          query_arr.shift
-
-          while query_arr.first != "\""
-            value << query_arr.shift
-          end
-
-          query_arr.shift
-        elsif(is_numeric?(query_arr.first))
-          begin
-            value << query_arr.shift
-          end while is_numeric?(query_arr.first) || query_arr.first == "."
-
-          begin
-            if value.include? "."
-              value = Float(value)
-            else
-              value = Integer(value)
-            end
-          rescue ArgumentError
-            raise ParseException "Malformed argument, invalid float: #{value}"
-          end
-        end
+        token = tokenizer.pop
+        value = case token[:type]
+                when :string
+                  token[:string][1..-2] # remove ""
+                when :int
+                  Integer(token[:string])
+                when :float
+                  Float(token[:string])
+                when :true
+                  true
+                when :false
+                  false
+                else
+                  raise ParseException, "Expected string, int, float, or boolean, got #{token[:string]}"
+                end
 
         args[key.to_sym] = value
 
-        trim_whitespace(query_arr)
-
-        if query_arr.first == ","
-          query_arr.shift
-        elsif query_arr.first == ")"
+        if tokenizer.peek[:type] == :comma
+          tokenizer.pop
+        elsif tokenizer.peek[:type] == :right_paren
+          tokenizer.pop
           break
         else
-          raise ParseException, "Malformed argument"
+          raise ParseException, "Expected comma or right paren, got #{tokenizer[:string]}"
         end
-        trim_whitespace(query_arr)
       end
-
-      # remove ")"
-      query_arr.shift
 
       return args
     end
 
-    def build_body(query_arr)
-      trim_whitespace(query_arr)
-
+    def build_body(tokenizer)
       body = []
-      return body unless query_arr.first == "{"
+      return body unless (tokenizer.peek[:type] == :left_brace)
 
       # remove "{"
-      query_arr.shift
+      tokenizer.pop
 
       while true
-        body << build_node(query_arr)
-        trim_whitespace(query_arr)
-        break if query_arr.first == "}"
+        body << build_node(tokenizer)
+        break if (tokenizer.peek[:type] == :right_brace)
       end
 
       # remove "}"
-      query_arr.shift
+      tokenizer.pop
 
       body
     end
 
-    def is_alpha?(char)
-      return unless char
-
-      ord = char.ord
-      (ord >= BIG_A_ORD && ord <= BIG_Z_ORD) || (ord >= LITTLE_A_ORD && ord <= LITTLE_Z_ORD)
-    end
-
-    def is_numeric?(char)
-      return unless char
-
-      ord = char.ord
-      (ord >= ZERO_ORD && ord <= NINE_ORD)
-    end
-
-    def is_whitespace?(char)
-      return unless char
-
-      ord = char.ord
-      ord == NEWLINE_ORD || # newline
-        ord == SPACE_ORD  # space
-    end
-
-    def trim_whitespace(query_arr)
-      while is_whitespace?(query_arr.first)
-        query_arr.shift
+    def validate_token_type(token, expected_type)
+      unless token[:type] == expected_type
+        raise ParseException, "Expected #{expected_type.to_s} token, got #{token[:string]}"
       end
     end
   end
