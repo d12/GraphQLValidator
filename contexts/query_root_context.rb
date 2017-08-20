@@ -1,3 +1,0 @@
-class QueryRootContext < Context
-
-end
