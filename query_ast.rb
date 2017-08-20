@@ -44,9 +44,6 @@
 #     }]
 #   }]
 # }
-require './constants'
-include Constants
-
 class QueryAST
   class ParseException < Exception; end
 
