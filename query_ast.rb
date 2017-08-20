@@ -1,4 +1,4 @@
-# QueryDSL parses the GraphQL query into structured DSL for the validator
+# QueryAST parses the GraphQL query into structured AST for the validator
 # to use.
 #
 # The class is strictly concerned about syntax, not semantics. It does ensure
@@ -12,7 +12,7 @@
 # To begin, we turn the query string into a char array. We only ever do
 # 1 of 2 things to the array: Look at the first element, and shift(pop) the first
 # element. This ensures we only actually read the query string once. By using a
-# recursive strategy, we can generate a DSL by reading the query once from beginning
+# recursive strategy, we can generate an AST by reading the query once from beginning
 # to end, one character at a time.
 #
 # Each method mutates query_arr and trims off the elements that it has processed.
@@ -47,7 +47,7 @@
 require './constants'
 include Constants
 
-class QueryDSL
+class QueryAST
   class ParseException < Exception; end
 
   class << self

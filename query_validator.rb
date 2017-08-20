@@ -1,16 +1,17 @@
 require './contexts/context'
 require './contexts/query_root_context'
 require './contexts/root_context'
-require './query_dsl'
+require './query_ast'
 
 class QueryValidator
   class << self
     def validate(schema, query)
       @schema = schema
-      parsed_DSL = QueryDSL.build(query)
+      ast = QueryAST.build(query)
     end
 
     def validate_layer(query, context:)
+
     end
   end
 end

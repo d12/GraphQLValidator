@@ -1,13 +1,13 @@
-require_relative '../query_dsl.rb'
+require_relative '../query_ast.rb'
 
-describe "QueryDSL" do
-  subject { QueryDSL }
+describe "QueryAST" do
+  subject { QueryAST }
 
   describe "#build" do
     context "simple, no args, no bodies" do
       let(:query) { "query" }
 
-      it "generates correct DSL" do
+      it "generates correct AST" do
         expect(subject.build(query)).to eq({
           field: "query",
           arguments: {},
@@ -19,7 +19,7 @@ describe "QueryDSL" do
     context "has a field with a body" do
       let(:query) { "query { viewer }" }
 
-      it "generates correct DSL" do
+      it "generates correct AST" do
         expect(subject.build(query)).to eq({
           field: "query",
           arguments: {},
@@ -35,7 +35,7 @@ describe "QueryDSL" do
     context "has multiple fields" do
       let(:query) { "query { viewer foo }" }
 
-      it "generates correct DSL" do
+      it "generates correct AST" do
         expect(subject.build(query)).to eq({
           field: "query",
           arguments: {},
@@ -57,7 +57,7 @@ describe "QueryDSL" do
       context "string arguments" do
         let(:query) { "query { user(name: \"John\") }" }
 
-        it "generates correct DSL" do
+        it "generates correct AST" do
           expect(subject.build(query)).to eq({
             field: "query",
             arguments: {},
@@ -73,7 +73,7 @@ describe "QueryDSL" do
       context "integer arguments" do
         let(:query) { "query { user(name: 2) }" }
 
-        it "generates correct DSL" do
+        it "generates correct AST" do
           expect(subject.build(query)).to eq({
             field: "query",
             arguments: {},
@@ -89,7 +89,7 @@ describe "QueryDSL" do
       context "float arguments" do
         let(:query) { "query { user(name: 2.5) }" }
 
-        it "generates correct DSL" do
+        it "generates correct AST" do
           expect(subject.build(query)).to eq({
             field: "query",
             arguments: {},
