@@ -1,5 +1,4 @@
 require './contexts/context'
-require './contexts/query_context'
 require './contexts/root_context'
 require './query_ast'
 
