@@ -95,9 +95,6 @@ class Schema
       elsif type["kind"] && type["name"]
         type_kind = type["kind"]
         type_name = type["name"]
-      else
-        puts "WHAT THE FUCK HAPPENED"
-        exit 1
       end
 
       break unless type = type["ofType"]
