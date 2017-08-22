@@ -26,7 +26,7 @@ class RootContext < Context
   def get_context_for_field(field, schema)
     case field.downcase
     when "query"
-      QueryContext.new
+      TypeContext.new(schema["queryType"]["name"])
     else
       raise Context::ValidationException, "Failed to find context for field: #{field}"
     end
