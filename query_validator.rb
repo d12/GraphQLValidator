@@ -21,10 +21,10 @@ class QueryValidator
       parent_context.validate_field_present(ast[:field], @schema)
 
       ast[:arguments].each do |key, value|
-        parent_context.validate_field_args(ast[:field], key, value, @schema)
+        parent_context.validate_field_arg(ast[:field], key, value, @schema)
       end
 
-      ast_context = parent_context.get_context_for_field(ast[:field], @schema)
+      ast_context = parent_context.get_context_for_field(ast[:field], @schema) || return
 
       ast[:body].each do |child_ast|
         validate_node(child_ast, ast_context)

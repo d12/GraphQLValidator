@@ -24,6 +24,10 @@ class Schema
     @schema = build_schema(raw_schema["data"]["__schema"])
   end
 
+  def [](arg)
+    @schema[arg]
+  end
+
   private
 
   def build_schema(json_schema)
@@ -103,8 +107,8 @@ class Schema
     {
       non_null: non_null,
       list: list,
-      type_kind: type_kind,
-      type_name: type_name
+      kind: type_kind,
+      name: type_name
     }
   end
 
