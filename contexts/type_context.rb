@@ -21,6 +21,25 @@ class TypeContext < Context
     unless arg
       raise Context::ValidationException, "#{key} argument does not exist on the #{field} field of #{@type}"
     end
+
+    validate_field_arg_type(key, value, arg[:type][:name])
+  end
+
+  def validate_field_arg_type(key, value, expected_type)
+    correct_type = case expected_type
+                   when "String"
+                     value.is_a? String
+                   when "Int"
+                     value.is_a? Integer
+                   when "Float"
+                     (value.is_a? Integer) || (value.is_a? Float)
+                   when "ID"
+                     value.is_a? String
+                   end
+
+    unless correct_type
+      raise Context::ValidationException, "Expected #{expected_type} type arg for #{key}, got #{value.class} (#{value})"
+    end
   end
 
   # TODO: Support  interfaces

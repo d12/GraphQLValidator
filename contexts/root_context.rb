@@ -7,7 +7,7 @@ class RootContext < Context
 
   def validate_field_present(field_name, schema)
     valid_fields = [schema[:query_type], schema[:mutation_type]].map(&:downcase)
-    puts valid_fields
+
     unless valid_fields.include? field_name.downcase
       raise Context::ValidationException, "#{field_name.downcase} is not a valid field on the root"
     end
