@@ -13,7 +13,6 @@ class TypeContext < Context
     end
   end
 
-  # TODO: Validate arg is correct type
   def validate_field_arg(field, key, value, schema)
     field = get_field(field, schema)
     arg = field[:args][key.to_s]
