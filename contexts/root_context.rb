@@ -1,3 +1,4 @@
+require_relative 'context'
 require_relative 'type_context'
 
 class RootContext < Context
