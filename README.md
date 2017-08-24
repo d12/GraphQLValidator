@@ -17,14 +17,18 @@ schema = Schema.new(JSON.parse(File.read("schema.json")))
 query = "
   query {
     viewer {
-      repositories(first: \"Foo\") {
+      repositories(first: 5) {
         totalCount
+        bar
       }
     }
   }
 "
 
 QueryValidator.validate(schema, query)
+```
+```
+=> bar not present on RepositoryConnection (Context::ValidationException)
 ```
 
 ## Performance
@@ -38,3 +42,9 @@ Validating query  0.000000   0.000000   0.000000 (  0.000569)
 ```
 
 [Script used to create benchmark](https://gist.github.com/nwoodthorpe/f5e426f85f8a3bdf40ff992c46a9cd88)
+
+## TODO
+
+ - Everything in the issues list
+ - Possibly redo the parser with Biston/LALR instead of implementing my own tokenization/parsing from scratch
+ - Make this into an actual useful thing (A packaged gem with a proper interface?)
