@@ -81,7 +81,7 @@ class QueryTokenizer
       :field
     end
 
-    return { type: token, string: next_token_string }
+    { type: token, string: next_token_string }
   end
 
   def trim_leading_whitespace

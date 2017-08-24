@@ -1,6 +1,6 @@
 # QueryAST parses the GraphQL query into an AST for the validator to use.
 #
-# The class is strictly concerned about syntax, not semantics. It does ensure
+# The class is strictly concerned about syntax, not semantics. It does not ensure
 # that various GraphQL semantics are followed such as type correctness,
 # valid field names, and valid structure.
 #
@@ -40,7 +40,7 @@ class QueryAST
     end
 
     def build_node(tokenizer)
-      return {
+      {
         field: get_field(tokenizer),
         arguments: get_args(tokenizer),
         body: build_body(tokenizer)
@@ -98,7 +98,7 @@ class QueryAST
         end
       end
 
-      return args
+      args
     end
 
     def build_body(tokenizer)
