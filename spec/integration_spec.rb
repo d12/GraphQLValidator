@@ -1,5 +1,5 @@
 require "json"
-require_relative "../query_validator"
+require_relative "../src/query_validator"
 
 describe "Integration specs" do
   # Use the GitHub schema for integration specs

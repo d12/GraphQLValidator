@@ -1,4 +1,4 @@
-require_relative '../../contexts/root_context'
+require_relative '../../src/contexts/root_context'
 
 describe "RootContext" do
   subject { RootContext.new }

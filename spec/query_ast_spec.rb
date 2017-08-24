@@ -1,5 +1,5 @@
-require_relative '../query_ast.rb'
-require_relative '../query_tokenizer.rb'
+require_relative '../src/query_ast.rb'
+require_relative '../src/query_tokenizer.rb'
 
 describe "QueryAST" do
   subject { QueryAST }
