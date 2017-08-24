@@ -1,3 +1,5 @@
+require_relative 'context'
+
 class TypeContext < Context
   def initialize(type)
     @type = type

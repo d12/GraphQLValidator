@@ -1,5 +1,6 @@
 require './contexts/context'
 require './contexts/root_context'
+require './query_tokenizer'
 require './query_ast'
 
 class QueryValidator

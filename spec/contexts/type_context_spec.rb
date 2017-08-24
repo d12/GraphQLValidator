@@ -1,4 +1,3 @@
-require_relative '../../contexts/context'
 require_relative '../../contexts/type_context'
 
 describe "TypeContext" do
