@@ -12,8 +12,7 @@ It ensures:
 ## Example
 
 ```Ruby
-schema = Schema.new(JSON.parse(File.read("schema.json")))
-
+schema = JSON.parse(File.read("schema.json"))
 query = "
   query {
     viewer {
@@ -25,7 +24,8 @@ query = "
   }
 "
 
-QueryValidator.validate(schema, query)
+validator = QueryValidator.new(schema)
+validator.validate(query)
 ```
 ```
 => bar not present on RepositoryConnection (Context::ValidationException)
@@ -36,12 +36,12 @@ QueryValidator.validate(schema, query)
 Generating a schema and validating a 29 line query gives this benchmark:
 
 ```
-       user     system      total        real
-Generating schema  0.030000   0.000000   0.030000 (  0.036233)
-Validating query  0.000000   0.000000   0.000000 (  0.000569)
+                    user     system      total        real
+Creating validator  0.010000   0.000000   0.010000 (  0.007621)
+Validating a query  0.000000   0.000000   0.000000 (  0.000593)
 ```
 
-[Script used to create benchmark](https://gist.github.com/nwoodthorpe/f5e426f85f8a3bdf40ff992c46a9cd88)
+[Script used to create benchmark](https://gist.github.com/nwoodthorpe/f9885a78f837bf96eed274e2ff81ebac)
 
 ## TODO
 
