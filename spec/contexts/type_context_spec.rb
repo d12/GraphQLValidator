@@ -1,4 +1,4 @@
-require_relative '../../contexts/type_context'
+require_relative '../../src/contexts/type_context'
 
 describe "TypeContext" do
   subject { TypeContext.new("query") }

@@ -1,8 +1,8 @@
-require './contexts/context'
-require './contexts/root_context'
-require './schema'
-require './query_tokenizer'
-require './query_ast'
+require_relative 'contexts/context'
+require_relative 'contexts/root_context'
+require_relative 'schema'
+require_relative 'query_tokenizer'
+require_relative 'query_ast'
 
 class QueryValidator
   class ValidationException < Exception; end

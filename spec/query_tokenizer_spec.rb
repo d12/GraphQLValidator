@@ -1,4 +1,4 @@
-require_relative "../query_tokenizer"
+require_relative "../src/query_tokenizer"
 
 describe "Query Tokenizer" do
   subject { QueryTokenizer }
