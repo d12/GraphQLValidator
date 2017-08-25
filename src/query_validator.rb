@@ -21,9 +21,6 @@ class QueryValidator
   private
 
   def validate_node(ast, parent_context)
-    # first, check if field is valid in parent context
-    # then check if args are valid
-    # then recursively validate body nodes
     parent_context.validate_field_present(ast[:field], @schema)
 
     ast[:arguments].each do |key, value|
@@ -32,8 +29,12 @@ class QueryValidator
 
     ast_context = parent_context.get_context_for_field(ast[:field], @schema) || return
 
-    ast[:body].each do |child_ast|
-      validate_node(child_ast, ast_context)
+    if ast[:body].empty?
+      raise Context::ValidationException, "Object \"#{@type} must have selections"
+    else
+      ast[:body].each do |child_ast|
+        validate_node(child_ast, ast_context)
+      end
     end
   end
 end
