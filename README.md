@@ -6,7 +6,7 @@ It ensures:
 1. No syntax errors
 2. Fields exist in the context they're used in
 3. Field args exist and are given the correct type
-4. All paths terminate with scalars (TODO)
+4. All objects have selections
 5. There are no naming conflicts (TODO)
 
 ## Example
