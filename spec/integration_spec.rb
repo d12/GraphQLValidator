@@ -36,7 +36,8 @@ describe "Integration specs" do
       "query {user(login: \"hello\"){}}",
       "user",
       "query { viewer }",
-      "query"
+      "query",
+      "query { user(login: \"foo\") { login } user(login: \"bar\"){ login } }"
     ]
 
     @queries.each do |query|

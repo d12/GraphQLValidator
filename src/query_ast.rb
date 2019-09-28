@@ -102,6 +102,7 @@ class QueryAST
     end
 
     def build_body(tokenizer)
+      used_field_signatures = {}
       body = []
       return body unless (tokenizer.peek[:type] == :left_brace)
 
@@ -109,7 +110,15 @@ class QueryAST
       tokenizer.pop
 
       while true
-        body << build_node(tokenizer)
+        node = build_node(tokenizer)
+
+        used_field_signatures[node[:field]] ||= node[:arguments].to_s
+        if used_field_signatures[node[:field]] && used_field_signatures[node[:field]] != node[:arguments].to_s
+          raise ParseException, "Field '#{node[:field]}' has a conflict."
+        end
+
+        body << node
+
         break if (tokenizer.peek[:type] == :right_brace)
       end
 
